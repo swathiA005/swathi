@@ -1,0 +1,25 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html><html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="../static/admin_login.css">
+</head>
+<body>
+   <div class="navbar">
+    <a href="/">Home</a>
+    <a href="/request_book">Submit Request</a>
+    <a href="/admin_login">login</a>
+    <a href="/admin">admin panel</a>
+    <a href="/check_status"> check status</a>
+  </div>
+    <div class="login-box">
+        <h2>Admin Login</h2>
+        <form action="/admin_login" method="POST">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+</body>
+</html>

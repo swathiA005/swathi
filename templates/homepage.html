@@ -1,0 +1,56 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Library Book Request Portal</title>
+  <link rel="stylesheet" href="../static/homepage.css">
+</head>
+<body>
+
+  <header>
+    <h1>Library Book Request Portal</h1>
+  </header>
+
+ <div class="navbar">
+    <a href="/">Home</a>
+    <a href="/request_book">Submit Request</a>
+    <a href="/admin_login">login</a>
+    <a href="/admin">admin panel</a>
+    <a href="/check_status"> check status</a>
+  </div>
+
+  <div class="container">
+    <h2>Student Verification</h2>
+    <form action="/confirmation" method="POST">
+      <label for="reg_no">Registration Number:</label>
+      <input type="text" id="reg_no" name="reg_no" required placeholder="e.g., 2023CSE001">
+
+      <label for="department">Department:</label>
+      <select id="department" name="department" required>
+        <option value="">-- Select Department --</option>
+        <option value="CSE">Computer Science</option>
+        <option value="ECE">Electronics</option>
+        <option value="MECH">Mechanical</option>
+        <option value="CIVIL">Civil</option>
+        <option value="EEE">Electrical</option>
+      </select>
+
+      <label for="year">Year:</label>
+      <select id="year" name="year" required>
+        <option value="">-- Select Year --</option>
+        <option value="1">1st Year</option>
+        <option value="2">2nd Year</option>
+        <option value="3">3rd Year</option>
+        <option value="4">4th Year</option>
+      </select>
+
+      <button type="submit">Proceed to Request Book</button>
+    </form>
+  </div>
+
+  <footer>
+    &copy; 2025 College Library | Book Request System
+  </footer>
+
+</body>
+</html>

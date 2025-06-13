@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Check Request Status</title>
+    <link rel="stylesheet" href="../static/check_status.css">
+</head>
+<body>
+     <div class="navbar">
+    <a href="/">Home</a>
+    <a href="/request_book">Submit Request</a>
+    <a href="/admin_login">login</a>
+    <a href="/admin">admin panel</a>
+    <a href="/check_status"> check status</a>
+  </div>
+    <h2>Check Your Request Status</h2>
+    <form method="POST" action="/check_status">
+        <label>Email ID:</label><br>
+        <input type="email" name="email" required><br>
+        <button type="submit">Check Status</button>
+    </form>
+
+    {% if requests %}
+    <h3>Your Requests</h3>
+    <table border="1">
+        <tr>
+            <th>Book Title</th>
+            <th>Author</th>
+            <th>Status</th>
+            <th>Expected Date</th>
+        </tr>
+        {% for req in requests %}
+        <tr>
+            <td>{{ req.book_title }}</td>
+            <td>{{ req.author }}</td>
+            <td>{{ req.status }}</td>
+            <td>{{ req.expected_date.strftime('%Y-%M-%D') if req.expected_date else 'Not Set' }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+</body>
+</html>

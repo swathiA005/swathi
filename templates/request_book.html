@@ -1,0 +1,57 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book Request Form</title>
+  <link rel="stylesheet" href="../static/request_book.css">
+  
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <div class="navbar">
+    <a href="/">Home</a>
+    <a href="/request_book">Submit Request</a>
+    <a href="/admin_login">login</a>
+    <a href="/admin">admin panel</a>
+    <a href="/check_status"> check status</a>
+  </div>
+
+  <!-- Main Form Container -->
+  <div class="container">
+    <h2>Book Request Form</h2>
+    <form action="/request_book" method="POST">
+
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name">
+
+      <label for="email">Email ID:</label>
+      <input type="email" id="email" name="email">
+
+      <label for="bookTitle">Book Title:</label>
+      <input type="text" id="bookTitle" name="bookTitle">
+
+      <label for="author">Author:</label>
+      <input type="text" id="author" name="author">
+
+      <label for="description">Description:</label>
+      <textarea id="description" name="description"></textarea>
+
+      <label for="status">Status:</label>
+      <input type="text" id="status" name="status">
+     <button type="submit">Submit Request</button>
+    </form>
+
+    <div class="message">
+      Request Submitted Successfully!
+    </div>
+
+    <div class="admin-section">
+      <h3>Admin - Manage Book Requests</h3>
+      <p>List of submitted book requests will appear here.</p>
+    </div>
+  </div>
+
+</body>
+</html>

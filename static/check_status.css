@@ -1,0 +1,137 @@
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to right, #f4e9ff, #fdfaff);
+            padding: 30px;
+            color: #4b0082;
+        }
+       .navbar {
+  background: linear-gradient(90deg, #6a0dad, #8a2be2);
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 14px 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.navbar a {
+  color: white;
+  text-decoration: none;
+  padding: 12px 20px;
+  margin: 4px;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.navbar a:hover {
+  background-color: #a463d7;
+  transform: scale(1.05);
+}
+
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #6a0dad;
+            font-size: 28px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 8px 20px rgba(106, 13, 173, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 14px 16px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background-color: #6a0dad;
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8f3ff;
+        }
+
+        tr:hover {
+            background-color: #f1e5ff;
+        }
+
+        select, input[type="date"] {
+            padding: 6px 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            background-color: #fdf8ff;
+            color: #4b0082;
+            font-size: 14px;
+        }
+
+        button {
+            padding: 7px 12px;
+            background-color: #6a0dad;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #8a2be2;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+
+            tr {
+                margin-bottom: 15px;
+                border: 1px solid #ddd;
+                border-radius: 10px;
+                padding: 10px;
+            }
+
+            th {
+                display: none;
+            }
+
+            td {
+                text-align: left;
+                padding-left: 50%;
+                position: relative;
+            }
+
+            td::before {
+                position: absolute;
+                left: 15px;
+                top: 14px;
+                font-weight: bold;
+                color: #6a0dad;
+                content: attr(data-label);
+            }
+        }
+    
