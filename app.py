@@ -1,16 +1,22 @@
 from flask import Flask, render_template, request, redirect, session
 import mysql.connector
 from datetime import datetime
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = 'super_secret_key'
 
-# MySQL Configuration
+# MySQL Configuration using environment variables
 DB_CONFIG = {
-    'host': 'localhost',
-    'user': 'root',
-    'password': '',
-    'database': 'book_request'
+    'host': os.getenv('DB_HOST'),
+    'user': os.getenv('DB_USER'),
+    'password': os.getenv('DB_PASSWORD'),
+    'database': os.getenv('DB_NAME'),
+    'port': os.getenv('DB_PORT', 3306)
 }
 
 def get_db_connection():
@@ -90,7 +96,6 @@ def admin_panel():
     cursor.close()
     conn.close()
     return render_template('admin_requests.html', requests=requests)
-    
 
 @app.route('/admin_request')
 def admin_request():
@@ -119,4 +124,4 @@ def logout():
     return redirect('/')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=int(os.getenv('PORT', 10000)))
