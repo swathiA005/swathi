@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = 'super_secret_key'
+app.secret_key = 'c12de3s68ed5s6e6'
 
 # MySQL Configuration using environment variables
 DB_CONFIG = {
@@ -16,11 +16,15 @@ DB_CONFIG = {
     'user': os.getenv('DB_USER'),
     'password': os.getenv('DB_PASSWORD'),
     'database': os.getenv('DB_NAME'),
-    'port': os.getenv('DB_PORT', 3306)
+    'port': int(os.getenv('DB_PORT', 3306))
 }
 
 def get_db_connection():
-    return mysql.connector.connect(**DB_CONFIG)
+    try:
+        return mysql.connector.connect(**DB_CONFIG)
+    except mysql.connector.Error as err:
+        app.logger.error(f"Database connection failed: {err}")
+        raise
 
 @app.route('/')
 def home():
@@ -36,14 +40,19 @@ def request_book():
         author = request.form['author']
         description = request.form['description']
 
-        conn = get_db_connection()
-        cur = conn.cursor()
-        cur.execute('''INSERT INTO library_db (student_name, email, book_title, author, description, status) 
-                       VALUES (%s, %s, %s, %s, %s, 'pending')''', 
-                    (name, email, title, author, description))
-        conn.commit()
-        cur.close()
-        conn.close()
+        try:
+            conn = get_db_connection()
+            cur = conn.cursor()
+            cur.execute('''INSERT INTO library_db (student_name, email, book_title, author, description, status) 
+                           VALUES (%s, %s, %s, %s, %s, 'pending')''', 
+                        (name, email, title, author, description))
+            conn.commit()
+        except mysql.connector.Error as err:
+            app.logger.error(f"Error inserting book request: {err}")
+            return render_template('error.html', message="Failed to submit book request. Please try again later.")
+        finally:
+            cur.close()
+            conn.close()
         return render_template('confirmation.html', name=name)
     return render_template('request_book.html')
 
@@ -52,12 +61,17 @@ def request_book():
 def check_status():
     if request.method == 'POST':
         email = request.form['email']
-        conn = get_db_connection()
-        cur = conn.cursor(dictionary=True)
-        cur.execute("SELECT * FROM library_db WHERE email = %s", (email,))
-        requests = cur.fetchall()
-        cur.close()
-        conn.close()
+        try:
+            conn = get_db_connection()
+            cur = conn.cursor(dictionary=True)
+            cur.execute("SELECT * FROM library_db WHERE email = %s", (email,))
+            requests = cur.fetchall()
+        except mysql.connector.Error as err:
+            app.logger.error(f"Error fetching status: {err}")
+            return render_template('error.html', message="Failed to fetch request status. Please try again later.")
+        finally:
+            cur.close()
+            conn.close()
         return render_template('check_status.html', requests=requests)
     return render_template('check_status.html', requests=None)
 
@@ -71,7 +85,7 @@ def admin_login():
             session['admin'] = True
             return redirect('/admin')
         else:
-            return "Invalid credentials. Try again."
+            return render_template('admin_login.html', error="Invalid credentials. Try again.")
     return render_template('admin_login.html')
 
 # Admin Panel
@@ -80,21 +94,26 @@ def admin_panel():
     if not session.get('admin'):
         return redirect('/admin_login')
 
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
 
-    if request.method == 'POST':
-        request_id = request.form['request_id']
-        new_status = request.form['status']
-        expected_date = request.form.get('expected_date') or None
-        update_query = "UPDATE library_db SET status = %s, expected_date = %s WHERE request_id = %s"
-        cursor.execute(update_query, (new_status, expected_date, request_id))
-        conn.commit()
+        if request.method == 'POST':
+            request_id = request.form['request_id']
+            new_status = request.form['status']
+            expected_date = request.form.get('expected_date') or None
+            update_query = "UPDATE library_db SET status = %s, expected_date = %s WHERE request_id = %s"
+            cursor.execute(update_query, (new_status, expected_date, request_id))
+            conn.commit()
 
-    cursor.execute("SELECT * FROM library_db")
-    requests = cursor.fetchall()
-    cursor.close()
-    conn.close()
+        cursor.execute("SELECT * FROM library_db")
+        requests = cursor.fetchall()
+    except mysql.connector.Error as err:
+        app.logger.error(f"Error in admin panel: {err}")
+        return render_template('error.html', message="Failed to load admin panel. Please try again later.")
+    finally:
+        cursor.close()
+        conn.close()
     return render_template('admin_requests.html', requests=requests)
 
 @app.route('/admin_request')
@@ -109,12 +128,18 @@ def confirmation():
         reg = request.form['reg_no']
         department = request.form['department']
         year = request.form['year']
-        conn = get_db_connection()
-        cur = conn.cursor()
-        cur.execute('''INSERT INTO book_request (reg, department, year) VALUES (%s, %s, %s)''', (reg, department, year))
-        conn.commit()
-        cur.close()
-        conn.close()
+        try:
+            conn = get_db_connection()
+            cur = conn.cursor()
+            cur.execute('''INSERT INTO book_request (reg, department, year) VALUES (%s, %s, %s)''', 
+                        (reg, department, year))
+            conn.commit()
+        except mysql.connector.Error as err:
+            app.logger.error(f"Error inserting confirmation: {err}")
+            return render_template('error.html', message="Failed to submit confirmation. Please try again later.")
+        finally:
+            cur.close()
+            conn.close()
         return render_template('request_book.html')
     return render_template('confirmation.html')
 
@@ -124,4 +149,4 @@ def logout():
     return redirect('/')
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=int(os.getenv('PORT', 10000)))
+    app.run(debug=False, host='0.0.0.0', port=int(os.getenv('PORT', 10000)))
