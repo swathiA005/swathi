@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = 'super_secret_key'
+app.secret_key = '1f2r3d6d4s9e2x6s'
 
 # MySQL Configuration using environment variables
 DB_CONFIG = {
