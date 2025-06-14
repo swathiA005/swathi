@@ -4,11 +4,11 @@ from datetime import datetime
 import os
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
+# Load environment variables from .env file (for local development)
 load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = 'c12de3s68ed5s6e6'
+app.secret_key = 'super_secret_key'
 
 # MySQL Configuration using environment variables
 DB_CONFIG = {
